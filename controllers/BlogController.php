@@ -17,22 +17,34 @@ class BlogController extends AbstractController
         $this->render("home", [$data]);
     }
 
-    public function category(string $categoryId) : void
+    public function category(int $categoryId) : void
     {
-        // si la catégorie existe
-        $this->render("category", []);
-
-        // sinon
-        $this->redirect("index.php");
+        $data = [];
+        $categoryManager = new CategoryManager();
+        $data['category'] = $categoryManager->findOne($categoryId);
+        $postManager = new PostManager();
+        $data['posts'] = $postManager->findByCategory($categoryId);
+        $categoryManager = new CategoryManager();
+        $data['categories'] = $categoryManager->findAll();
+        if($data) {
+            $this->render("category", [$data]);
+        } else {
+            $this->redirect("index.php");
+        }
     }
 
-    public function post(string $postId) : void
+    public function post(int $postId) : void
     {
-        // si le post existe
-        $this->render("post", []);
-
-        // sinon
-        $this->redirect("index.php");
+        $data = [];
+        $postManager = new PostManager();
+        $data['post'] = $postManager->findOne($postId);
+        $categoryManager = new CategoryManager();
+        $data['categories'] = $categoryManager->findAll();
+        if($data) {
+            $this->render("post", [$data]);
+        } else {
+            $this->redirect("index.php");
+        }
     }
 
     public function checkComment() : void

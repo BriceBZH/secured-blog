@@ -1,41 +1,25 @@
 <main id="category" class="py-5 px-3">
     <h1 class="mb-5">Secured Blog</h1>
 
-    <h2 class="mt-5">Category Name</h2>
+    <h2 class="mt-5"><?php echo $data[0]['category']->getTitle() ?></h2>
     <ul class="row mt-5">
-        <li class="col-4 my-2">
-            <article class="card">
-                <header class="card-body">
-                    <h3 class="h5 card-title">Post Title</h3>
-                </header>
-                <section class="card-body">
-                    <p class="card-text">Post Excerpt</p>
-                    <a href="#" class="btn btn-primary">Post Link</a>
-                </section>
-            </article>
-        </li>
-        <li class="col-4 my-2">
-            <article class="card">
-                <header class="card-body">
-                    <h3 class="h5 card-title">Post Title</h3>
-                </header>
-                <section class="card-body">
-                    <p class="card-text">Post Excerpt</p>
-                    <a href="#" class="btn btn-primary">Post Link</a>
-                </section>
-            </article>
-        </li>
-        <li class="col-4 my-2">
-            <article class="card">
-                <header class="card-body">
-                    <h3 class="h5 card-title">Post Title</h3>
-                </header>
-                <section class="card-body">
-                    <p class="card-text">Post Excerpt</p>
-                    <a href="#" class="btn btn-primary">Post Link</a>
-                </section>
-            </article>
-        </li>
+        <?php
+            foreach($data[0]['posts'] as $val) {
+                ?>
+                <li class="col-4 my-2">
+                    <article class="card">
+                        <header class="card-body">
+                            <h3 class="h5 card-title"><?php echo $val->getTitle() ?></h3>
+                        </header>
+                        <section class="card-body">
+                            <p class="card-text"><?php echo $val->getExcerpt() ?></p>
+                            <a href="index.php?route=post&post_id=<?php echo $val->getId() ?>" class="btn btn-primary">Post Link</a>
+                        </section>
+                    </article>
+                </li>
+                <?php
+            }
+        ?>
         <li class="col-4 my-2">
             <article class="card">
                 <header class="card-body">

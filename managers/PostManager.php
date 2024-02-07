@@ -32,7 +32,7 @@ class PostManager extends AbstractManager
     }
 
     public function findOne(int $id) : ?Post {
-        $query = $this->db->prepare('SELECT * FROM posts WHERE id = :id');
+        $query = $this->db->prepare('SELECT posts.id, posts.title, posts.excerpt, posts.content, posts.created_at, posts.author, posts_categories.category_id FROM posts JOIN posts_categories ON posts.id = posts_categories.post_id WHERE id = :id');
         $parameters = [
             "id" => $id,
         ];
@@ -42,16 +42,35 @@ class PostManager extends AbstractManager
         if($postDB) {
             $userManager = new UserManager();
             $user = $userManager->findById($postDB["author"]);
-            $post = new Post($postDB["title"], $postDB["except"], $postDB["content"], $user, $postDB["createdAt"], $category);
+            $categoryManager = new CategoryManager();
+            $category = $categoryManager->findOne($postDB["category_id"]);
+            $post = new Post($postDB["title"], $postDB["excerpt"], $postDB["content"], $user, DateTime::createFromFormat('Y-m-d H:i:s', $postDB["created_at"]), $category);
             $post->setId($postDB["id"]);
 
-            return $psot;
+            return $post;
         }
 
         return null;
     }
 
     public function findByCategory(int $categoryId) : array {
+        $query = $this->db->prepare('SELECT posts.id, posts.title, posts.excerpt, posts.content, posts.created_at, posts.author, posts_categories.category_id FROM posts JOIN posts_categories ON posts.id = posts_categories.post_id WHERE category_id = :id');
+        $parameters = [
+            "id" => $categoryId,
+        ];
+        $query->execute($parameters);
+        $postDB = $query->fetchAll(PDO::FETCH_ASSOC);
 
+        foreach($postDB as $postFor) {
+            $userManager = new UserManager();
+            $user = $userManager->findById($postFor["author"]);
+            $categoryManager = new CategoryManager();
+            $category = $categoryManager->findOne($categoryId);
+            $post = new Post($postFor["title"], $postFor["excerpt"], $postFor["content"], $user, DateTime::createFromFormat('Y-m-d H:i:s', $postFor["created_at"]), $category);
+            $post->setId($postFor["id"]);
+            $posts[] = $post;
+        }
+        
+        return $posts;
     }
 }
