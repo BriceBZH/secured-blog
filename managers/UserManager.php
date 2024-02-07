@@ -18,11 +18,11 @@ class UserManager extends AbstractManager
             "email" => $email
         ];
         $query->execute($parameters);
-        $user = $query->fetch(PDO::FETCH_ASSOC);
+        $userDB = $query->fetch(PDO::FETCH_ASSOC);
 
-        if($user) {
-            $user = new User($user['username'], $user['password'], $user['role'], DateTime::createFromFormat('Y-m-d H:i:s', $user['createdAt']));
-            $user->setId($user["id"]);
+        if($userDB) {
+            $user = new User($userDB['username'], $userDB['email'], $userDB['password'], $userDB['role'], DateTime::createFromFormat('Y-m-d H:i:s', $userDB['created_at']));
+            $user->setId($userDB["id"]);
 
             return $user;
         }
@@ -39,7 +39,7 @@ class UserManager extends AbstractManager
         $userDB = $query->fetch(PDO::FETCH_ASSOC);
 
         if($userDB) {
-            $user = new User($userDB['username'], $userDB['password'], $userDB['role'], DateTime::createFromFormat('Y-m-d H:i:s', $userDB['created_at']));
+            $user = new User($userDB['username'], $userDB['password'], $userDB['password'], $userDB['role'], DateTime::createFromFormat('Y-m-d H:i:s', $userDB['created_at']));
             $user->setId($userDB["id"]);
 
             return $user;
