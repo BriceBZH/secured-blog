@@ -38,9 +38,9 @@ class UserManager extends AbstractManager
         $query->execute($parameters);
         $userDB = $query->fetch(PDO::FETCH_ASSOC);
 
-        if($user) {
-            $user = new User($userDB['username'], $userDB['password'], $userDB['role'], DateTime::createFromFormat('Y-m-d H:i:s', $userDB['createdAt']));
-            $user->setId($user["id"]);
+        if($userDB) {
+            $user = new User($userDB['username'], $userDB['password'], $userDB['role'], DateTime::createFromFormat('Y-m-d H:i:s', $userDB['created_at']));
+            $user->setId($userDB["id"]);
 
             return $user;
         }

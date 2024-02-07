@@ -9,7 +9,12 @@ class BlogController extends AbstractController
 {
     public function home() : void
     {
-        $this->render("home", []);
+        $data = [];
+        $postManager = new PostManager();
+        $data['posts'] = $postManager->findLatest();
+        $categoryManager = new CategoryManager();
+        $data['categories'] = $categoryManager->findAll();
+        $this->render("home", [$data]);
     }
 
     public function category(string $categoryId) : void

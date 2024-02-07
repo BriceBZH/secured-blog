@@ -8,7 +8,7 @@
 class Post
 {
     private ? int $id = null;
-    public function __construct(private string $title, private string $except, private string $content, private User $author, private datetime $createdAt, private Category $category)
+    public function __construct(private string $title, private string $excerpt, private string $content, private User $author, private datetime $createdAt, private Category $category)
     {
 
     }
@@ -33,14 +33,14 @@ class Post
         $this->title = $title;
     }
 
-    public function getExcept(): string
+    public function getExcerpt(): string
     {
-        return $this->except;
+        return $this->excerpt;
     }
 
-    public function setExcept(string $except): void
+    public function setExcerpt(string $excerpt): void
     {
-        $this->except = $except;
+        $this->excerpt = $excerpt;
     }
 
     public function getContent(): string

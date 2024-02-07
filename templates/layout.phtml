@@ -22,9 +22,13 @@
                             Categories
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Development</a></li>
-                            <li><a class="dropdown-item" href="#">Design</a></li>
-                            <li><a class="dropdown-item" href="#">Accessibility</a></li>
+                            <?php
+                                foreach($data[0]['categories'] as $val) {
+                                    ?>
+                                    <li><a class="dropdown-item" href="#"><?php echo $val->getTitle() ?></a></li>
+                                    <?php
+                                }
+                            ?>
                         </ul>
                     </li>
                     <li class="nav-item">

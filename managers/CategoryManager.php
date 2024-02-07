@@ -19,7 +19,7 @@ class CategoryManager extends AbstractManager
         $categories = [];
 
         foreach($categDB as $categ) {
-            $category = new Category($categ["description"]);
+            $category = new Category($categ["title"], $categ["description"]);
             $category->setId($categ["id"]);
             $categories[] = $category;
         }
@@ -37,7 +37,7 @@ class CategoryManager extends AbstractManager
         $categ = $query->fetch(PDO::FETCH_ASSOC);
 
         if($categ) {
-            $category = new Category($categ["description"]);
+            $category = new Category($categ["title"], $categ["description"]);
             $category->setId($categ["id"]);
 
             return $category;
