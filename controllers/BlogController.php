@@ -14,7 +14,7 @@ class BlogController extends AbstractController
         $data['posts'] = $postManager->findLatest();
         $categoryManager = new CategoryManager();
         $data['categories'] = $categoryManager->findAll();
-        $this->render("home", [$data]);
+        $this->render("home", $data);
     }
 
     public function category(int $categoryId) : void
@@ -27,7 +27,7 @@ class BlogController extends AbstractController
         $categoryManager = new CategoryManager();
         $data['categories'] = $categoryManager->findAll();
         if($data) {
-            $this->render("category", [$data]);
+            $this->render("category", $data);
         } else {
             $this->redirect("index.php");
         }
@@ -41,7 +41,7 @@ class BlogController extends AbstractController
         $categoryManager = new CategoryManager();
         $data['categories'] = $categoryManager->findAll();
         if($data) {
-            $this->render("post", [$data]);
+            $this->render("post", $data);
         } else {
             $this->redirect("index.php");
         }

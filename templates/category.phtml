@@ -1,10 +1,10 @@
 <main id="category" class="py-5 px-3">
     <h1 class="mb-5">Secured Blog</h1>
 
-    <h2 class="mt-5"><?php echo $data[0]['category']->getTitle() ?></h2>
+    <h2 class="mt-5"><?php echo $data['category']->getTitle() ?></h2>
     <ul class="row mt-5">
         <?php
-            foreach($data[0]['posts'] as $val) {
+            foreach($data['posts'] as $val) {
                 ?>
                 <li class="col-4 my-2">
                     <article class="card">
