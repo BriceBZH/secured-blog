@@ -11,7 +11,7 @@
                     <article class="card">
                         <header class="card-body">
                             <h3 class="h5 card-title"><?php echo $val->getTitle() ?></h3>
-                            <h4 class="h6 card-subtitle mb-2 text-body-secondary">Category Name</h4>
+                            <h4 class="h6 card-subtitle mb-2 text-body-secondary"><?php echo $val->getCategory()->getTitle() ?></h4>
                         </header>
                         <section class="card-body">
                             <p class="card-text"><?php echo $val->getExcerpt() ?></p>

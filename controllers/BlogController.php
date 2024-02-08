@@ -40,6 +40,8 @@ class BlogController extends AbstractController
         $data['post'] = $postManager->findOne($postId);
         $categoryManager = new CategoryManager();
         $data['categories'] = $categoryManager->findAll();
+        $commentManager = new CommentManager();
+        $data['comments'] = $commentManager->findByPost($postId);
         if($data) {
             $this->render("post", $data);
         } else {
@@ -49,6 +51,31 @@ class BlogController extends AbstractController
 
     public function checkComment() : void
     {
-        $this->redirect("index.php?route=post&post_id={$_POST["post_id"]}");
+        //pour commencer on test le tokenCSRF
+        $tokenCSRF = new CSRFTokenManager();
+        $verifToken = $tokenCSRF->validateCSRFToken($_POST['csrf-token']);
+        var_dump($verifToken);
+        if($verifToken) {
+            if(isset($_POST['comment'])) {
+                $userManager = new UserManager();
+                $user = $userManager->findById($_SESSION['id']);
+                $postManager = new PostManager();
+                $post = $postManager->findOne($_GET['post']);     
+                $comment = new Comment(htmlspecialchars($_POST['comment']), $user, $post);
+                $commentManager = new CommentManager();
+                $commentManager->create($comment);
+                $this->redirect("index.php?route=post&post_id={$_GET['post']}");
+            } else {
+                $this->redirect("index.php?route=comment");
+            }
+        } else {
+            $this->redirect("index.php?route=comment");
+        }
+        
+    }
+
+    public function comment() : void
+    {
+        $this->render("add-comment", []);
     }
 }

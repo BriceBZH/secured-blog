@@ -18,28 +18,27 @@ class CommentManager extends AbstractManager
             "postId" => $postId
         ];
         $query->execute($parameters);
-        $commentDB = $query->fetch(PDO::FETCH_ASSOC);
-
-        if($commentDB) {
+        $commentDB = $query->fetchAll(PDO::FETCH_ASSOC);
+        $comments = [];
+        foreach($commentDB as $com) {
             $userManager = new UserManager();
-            $user = $userManager->findById($commentDB["user_id"]);
-            $postManager = new UserManager();
-            $post = $postManager->findOne($commentDB["post_id"]);
-            $comment = new Comment($commentDB['content'], $user, $post);
-            $comment->setId($commentDB["id"]);
-
-            return $comment;
+            $user = $userManager->findById($com["user_id"]);
+            $postManager = new PostManager();
+            $post = $postManager->findOne($com["post_id"]);
+            $comment = new Comment($com['content'], $user, $post);
+            $comment->setId($com["id"]);
+            $comments[] = $comment;
         }
 
-        return null;
+        return $comments;
     }
 
     public function create(Comment $comment) : void {
         $query = $this->db->prepare('INSERT INTO comments (content, user_id, post_id) VALUES (:content, :userId, :postId)');
         $parameters = [
-            "content" => $user->getContent(),
-            "userId" => $user->getUser(),
-            "postId" => $user->getPost(),
+            "content" => $comment->getContent(),
+            "userId" => $comment->getUser()->getId(),
+            "postId" => $comment->getPost()->getId(),
         ];
 
         $query->execute($parameters);

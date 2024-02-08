@@ -36,6 +36,10 @@ class Router
         {
             $this->ac->checkLogin();
         }
+        else if(isset($get["route"]) && $get["route"] === "comment")
+        {
+            $this->bc->comment();
+        }
         else if(isset($get["route"]) && $get["route"] === "logout")
         {
             $this->ac->logout();

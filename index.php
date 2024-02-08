@@ -16,5 +16,3 @@ if(!isset($_SESSION['csrf_token'])) {
 $router = new Router();
 
 $router->handleRequest($_GET);
-
-print_r($_SESSION);

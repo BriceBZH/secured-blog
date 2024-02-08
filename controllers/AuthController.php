@@ -28,6 +28,7 @@ class AuthController extends AbstractController
                         $_SESSION["email"] = $user->getEmail();
                         $_SESSION["username"] = $user->getUsername();
                         $_SESSION["role"] = $user->getRole();
+                        $_SESSION["id"] = $user->getId();
                         $this->redirect("index.php");
                     } else {
                         $this->redirect("index.php?route=login");
@@ -59,13 +60,15 @@ class AuthController extends AbstractController
                 $userManager = new UserManager();
                 $userDB = $userManager->findByEmail(htmlspecialchars($_POST['email']));
                 if(!$userDB) { //user déjà existant avec cet email
-                    $user = new User(htmlspecialchars($_POST['username']), htmlspecialchars($_POST['email']), password_hash($_POST['password'], PASSWORD_DEFAULT), "USER", DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));         
-                    $userManager->create($user);
-                    $_SESSION["email"] = htmlspecialchars($_POST['email']);
-                    $_SESSION["username"] = htmlspecialchars($_POST['username']);
-                    $_SESSION["role"] = "USER";
-                    $_SESSION['csrf_token'] = $_POST['csrf-token'];
-                    $this->redirect("index.php");
+                    //on test le mdp (Les mots de passe doivent faire 8 caractères au minimum, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial)
+                    $password_regex = "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\d\s])(?=.*[a-zA-Z\d\W\S]).{8,}$/";
+                    if(preg_match($password_regex, $_POST['password'])) {
+                        $user = new User(htmlspecialchars($_POST['username']), htmlspecialchars($_POST['email']), password_hash($_POST['password'], PASSWORD_BCRYPT), "USER", DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));         
+                        $userManager->create($user);
+                        $this->redirect("index.php");
+                    } else {
+                        $this->redirect("index.php?route=register");
+                    }
                 } else {
                     $this->redirect("index.php?route=register");
                 }
