@@ -19,7 +19,14 @@ class CategoryManager extends AbstractManager
         $categories = [];
 
         foreach($categDB as $categ) {
-            $category = new Category($categ["title"], $categ["description"]);
+            if ($_SESSION['lang'] === 'fr') {
+                $title = $categ["title_fr"];
+                $description = $categ["description_fr"];
+            } else {
+                $title = $categ["title_en"];
+                $description = $categ["description_en"];
+            }
+            $category = new Category($title, $description);
             $category->setId($categ["id"]);
             $categories[] = $category;
         }
@@ -37,7 +44,14 @@ class CategoryManager extends AbstractManager
         $categ = $query->fetch(PDO::FETCH_ASSOC);
 
         if($categ) {
-            $category = new Category($categ["title"], $categ["description"]);
+            if ($_SESSION['lang'] === 'fr') {
+                $title = $categ["title_fr"];
+                $description = $categ["description_fr"];
+            } else {
+                $title = $categ["title_en"];
+                $description = $categ["description_en"];
+            }
+            $category = new Category($title, $description);
             $category->setId($categ["id"]);
 
             return $category;

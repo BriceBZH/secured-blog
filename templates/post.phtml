@@ -3,7 +3,7 @@
     <?php
         echo $data['post']->getContent();
     ?>
-    <h2 class="mt-5">List of comments</h2>
+    <h2 class="mt-5"><?= $this->translator->translate("list_comments_title") ?></h2>
         
         <ul class="row mt-5">
             <?php
@@ -20,5 +20,5 @@
                 }
             ?>
         </ul>
-    <a href="index.php?route=comment&post=<?php echo $data['post']->getId() ?>" class="btn btn-primary mt-3"><span class="bi-plus-circle-fill"></span> Add comment</a>
+    <a href="index.php?route=comment&post=<?php echo $data['post']->getId() ?>" class="btn btn-primary mt-3"><span class="bi-plus-circle-fill"></span><?= $this->translator->translate("add_comment_button") ?></a>
 </main>

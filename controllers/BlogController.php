@@ -7,6 +7,13 @@
 
 class BlogController extends AbstractController
 {
+    public function __construct()
+    {
+        $lang = $_SESSION["lang"];
+
+        parent::__construct("auth", $lang);
+    }
+    
     public function home() : void
     {
         $data = [];
@@ -54,7 +61,6 @@ class BlogController extends AbstractController
         //pour commencer on test le tokenCSRF
         $tokenCSRF = new CSRFTokenManager();
         $verifToken = $tokenCSRF->validateCSRFToken($_POST['csrf-token']);
-        var_dump($verifToken);
         if($verifToken) {
             if(isset($_POST['comment'])) {
                 $userManager = new UserManager();

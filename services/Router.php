@@ -24,6 +24,10 @@ class Router
         {
             $this->ac->register();
         }
+        else if(isset($get["route"]) && $get["route"] === "switch-lang")
+        {
+            $this->ac->switchLang();
+        }
         else if(isset($get["route"]) && $get["route"] === "check-register")
         {
             $this->ac->checkRegister();
