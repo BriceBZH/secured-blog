@@ -13,27 +13,32 @@ class PostManager extends AbstractManager
     }
 
     public function findLatest() : array {
-        $query = $this->db->prepare('SELECT posts.id, posts.title_en, posts.excerpt_en, posts.content_en, posts.title_fr, posts.excerpt_fr, posts.content_fr, posts.created_at, posts.author, posts_categories.category_id FROM posts JOIN posts_categories ON posts.id = posts_categories.post_id GROUP BY posts.id ORDER BY created_at LIMIT 4');
-        $query->execute();
-        $postDB = $query->fetchAll(PDO::FETCH_ASSOC);
-        $posts = [];
         $userManager = new UserManager();
         $categoryManager = new CategoryManager();
 
+        // $query = $this->db->prepare('SELECT posts.id, posts.title_en, posts.excerpt_en, posts.content_en, posts.title_fr, posts.excerpt_fr, posts.content_fr, posts.created_at, posts.author, posts_categories.category_id FROM posts JOIN posts_categories ON posts.id = posts_categories.post_id GROUP BY posts.id ORDER BY created_at LIMIT 4');
+        $query = $this->db->prepare('SELECT * FROM posts ORDER BY created_at LIMIT 4');
+        $query->execute();
+        $postDB = $query->fetchAll(PDO::FETCH_ASSOC);
+        $posts = [];
+        
         foreach($postDB as $postFor) {
             $user = $userManager->findById($postFor["author"]); 
-            $category = $categoryManager->findOne($postFor["category_id"]);
-            if ($_SESSION['lang'] === 'fr') {
-                $title = $postFor["title_fr"];
-                $excerpt = $postFor["excerpt_fr"];
-                $content = $postFor["content_fr"];
-            } else {
-                $title = $postFor["title_en"];
-                $excerpt = $postFor["excerpt_en"];
-                $content = $postFor["content_en"];
-            }
-            $post = new Post($title, $excerpt, $content, $user, DateTime::createFromFormat('Y-m-d H:i:s', $postFor["created_at"]), $category);
+            $categories = $categoryManager->findByPost($postFor["id"]);
+            // $category = $categoryManager->findOne($postFor["category_id"]);
+            // if ($_SESSION['lang'] === 'fr') {
+            //     $title = $postFor["title_fr"];
+            //     $excerpt = $postFor["excerpt_fr"];
+            //     $content = $postFor["content_fr"];
+            // } else {
+            //     $title = $postFor["title_en"];
+            //     $excerpt = $postFor["excerpt_en"];
+            //     $content = $postFor["content_en"];
+            // }
+            // $post = new Post($title, $excerpt, $content, $user, DateTime::createFromFormat('Y-m-d H:i:s', $postFor["created_at"]), $category);
+            $post = new Post($postFor["title"], $postFor["excerpt"], $postFor["content"], $user, DateTime::createFromFormat('Y-m-d H:i:s', $postFor["created_at"]));
             $post->setId($postFor["id"]);
+            $post->setCategories($categories);
             $posts[] = $post;
         }
         
