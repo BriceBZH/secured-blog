@@ -44,7 +44,6 @@ class BlogController extends AbstractController
 
     public function checkComment() : void
     {
-        //pour commencer on test le tokenCSRF
         $tokenCSRF = new CSRFTokenManager();
         $verifToken = $tokenCSRF->validateCSRFToken($_POST['csrf-token']);
         if($verifToken) {

@@ -23,29 +23,18 @@ abstract class AbstractManager
         $info = [];
 
         if ($handle) {
-
             while (($line = fgets($handle)) !== false) {
-
-                if($lineNbr === 0)
-                {
+                if($lineNbr === 0) {
                     $info["user"] = trim($line);
-                }
-                else if($lineNbr === 1)
-                {
+                } else if($lineNbr === 1) {
                     $info["password"] = trim($line);
-                }
-                else if($lineNbr === 2)
-                {
+                } else if($lineNbr === 2) {
                     $info["host"] = trim($line);
-                }
-                else if($lineNbr === 3)
-                {
+                } else if($lineNbr === 3) {
                     $info["db_name"] = trim($line);
                 }
-
                 $lineNbr++;
             }
-
             fclose($handle);
         }
 
