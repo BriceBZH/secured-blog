@@ -1,27 +1,23 @@
 <main id="login" class="container py-5 px-3">
-    <h1 class="mb-5"><?= $this->translator->translate("site_title") ?></h1>
+    <h1 class="mb-5">Blog sécurisé</h1>
 
-    <h2 class="mt-5"><?= $this->translator->translate("login_title") ?></h2>
+    <h2 class="mt-5">Connexion</h2>
 
     <form action="index.php?route=check-login" method="post">
         <input type="hidden" name="csrf-token" id="csrf-token" value="<?php echo $_SESSION['csrf_token'] ?>" />
         <fieldset class="my-1">
-            <label for="email" class="form-label">
-                <?= $this->translator->translate("login_email_label") ?>
-            </label>
+            <label for="email" class="form-label">Email</label>
             <input type="email" name="email" id="email" value="" class="form-control"/>
         </fieldset>
         <fieldset class="my-1">
-            <label for="password" class="form-label">
-            <?= $this->translator->translate("login_password_label") ?>
-            </label>
+            <label for="password" class="form-label">Mot de passe</label>
             <input type="password" name="password" id="password" class="form-control" />
         </fieldset>
         <fieldset>
-            <button type="submit" class="btn btn-primary"><?= $this->translator->translate("login_submit_button") ?></button>
+            <button type="submit" class="btn btn-primary">Connexion</button>
         </fieldset>
     </form>
     <p>
-        <?= $this->translator->translate("login_register_text") ?> <a href="index.php?route=register"> <?= $this->translator->translate("login_link_text") ?> </a>
+        Vous n'avez pas encore de compte ?<a href="index.php?route=register">Créer un compte</a>
     </p>
 </main>

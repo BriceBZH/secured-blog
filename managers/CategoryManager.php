@@ -1,9 +1,4 @@
 <?php
-/**
- * @author : Gaellan
- * @link : https://github.com/Gaellan
- */
-
 
 class CategoryManager extends AbstractManager
 {
@@ -19,15 +14,8 @@ class CategoryManager extends AbstractManager
         $categories = [];
 
         foreach($categDB as $categ) {
-            if ($_SESSION['lang'] === 'fr') {
-                $title = $categ["title_fr"];
-                $description = $categ["description_fr"];
-            } else {
-                $title = $categ["title_en"];
-                $description = $categ["description_en"];
-            }
-            $category = new Category($title, $description);
-            $category->setId($categ["id"]);
+            $category = new Category($categ['title'], $categ['description']);
+            $category->setId($categ['id']);
             $categories[] = $category;
         }
 
@@ -44,15 +32,8 @@ class CategoryManager extends AbstractManager
         $categ = $query->fetch(PDO::FETCH_ASSOC);
 
         if($categ) {
-            if ($_SESSION['lang'] === 'fr') {
-                $title = $categ["title_fr"];
-                $description = $categ["description_fr"];
-            } else {
-                $title = $categ["title_en"];
-                $description = $categ["description_en"];
-            }
-            $category = new Category($title, $description);
-            $category->setId($categ["id"]);
+            $category = new Category($categ['title'], $categ['description']);
+            $category->setId($categ['id']);
 
             return $category;
         }
@@ -62,9 +43,7 @@ class CategoryManager extends AbstractManager
 
     public function findByPost(int $postId) : array
     {
-        $query = $this->db->prepare('SELECT categories.title FROM categories 
-    JOIN posts_categories ON posts_categories.category_id=categories.id 
-    WHERE posts_categories.post_id=:postId');
+        $query = $this->db->prepare('SELECT categories.title FROM categories JOIN posts_categories ON posts_categories.category_id=categories.id WHERE posts_categories.post_id=:postId');
         $parameters = [
             "postId" => $postId
         ];

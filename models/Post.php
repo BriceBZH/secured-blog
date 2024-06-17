@@ -1,15 +1,10 @@
 <?php
-/**
- * @author : Gaellan
- * @link : https://github.com/Gaellan
- */
-
 
 class Post
 {
     private ? int $id = null;
     private array $categories = [];
-    public function __construct(private string $title, private string $excerpt, private string $content, private User $author, private datetime $createdAt) //, private Category $category
+    public function __construct(private string $title, private string $excerpt, private string $content, private User $author, private datetime $createdAt = new DateTime())
     {
 
     }
@@ -54,14 +49,14 @@ class Post
         $this->content = $content;
     }
 
-    public function getUser(): User
+    public function getAuthor(): User
     {
-        return $this->user;
+        return $this->author;
     }
 
-    public function setUser(User $user): void
+    public function setAuthor(User $author): void
     {
-        $this->user = $user;
+        $this->author = $author;
     }
 
     public function getCreatedAt(): datetime
@@ -83,14 +78,4 @@ class Post
     {
         $this->categories = $categories;
     }
-
-    // public function getCategory(): Category
-    // {
-    //     return $this->category;
-    // }
-
-    // public function setCategory(Category $category): void
-    // {
-    //     $this->category = $category;
-    // }
 }

@@ -13,12 +13,6 @@ if(!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = $token;
 }
 
-if(!isset($_SESSION["lang"])) {
-    $_SESSION["lang"] = "fr";
-}
-
 $router = new Router();
 
 $router->handleRequest($_GET);
-
-print_r($_SESSION);

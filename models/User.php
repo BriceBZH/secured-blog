@@ -7,7 +7,7 @@
 class User
 {
     private ? int $id = null;
-    public function __construct(private string $username, private string $email, private string $password, private string $role, private datetime $createdAt)
+    public function __construct(private string $username, private string $email, private string $password, private string $role = "USER")
     {
 
     }

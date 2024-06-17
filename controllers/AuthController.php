@@ -1,30 +1,10 @@
 <?php
-/**
- * @author : Gaellan
- * @link : https://github.com/Gaellan
- */
-
 
 class AuthController extends AbstractController
 {
-    public function __construct()
-    {
-        $lang = $_SESSION["lang"];
-
-        parent::__construct("auth", $lang);
-    }
-
-    public function getTranslator() : Translator
-    {
-        return $this->translator;
-    }
-
     public function login() : void
     {
-        $data = [];
-        $categoryManager = new CategoryManager();
-        $data['categories'] = $categoryManager->findAll();
-        $this->render("login", $data);
+        $this->render("login", []);
     }
 
     public function checkLogin() : void
@@ -32,7 +12,6 @@ class AuthController extends AbstractController
         //test tokenCSRF
         $tokenCSRF = new CSRFTokenManager();
         $verifToken = $tokenCSRF->validateCSRFToken($_POST['csrf-token']);
-        echo $_POST['csrf-token']." ".$_SESSION['csrf_token'];
         if($verifToken) {
             if(isset($_POST['password']) && isset($_POST['email'])) {
                 $userManager = new UserManager();
@@ -61,10 +40,7 @@ class AuthController extends AbstractController
 
     public function register() : void
     {
-        $data = [];
-        $categoryManager = new CategoryManager();
-        $data['categories'] = $categoryManager->findAll();
-        $this->render("register", $data);
+        $this->render("register", []);
     }
 
     public function checkRegister() : void
@@ -80,7 +56,7 @@ class AuthController extends AbstractController
                     //check mdp (8 characters or more, 1 capital lettre or more, 1 lowercase letter or more, 1 number and 1 special character)
                     $password_regex = "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^\w\d\s])(?=.*[a-zA-Z\d\W\S]).{8,}$/";
                     if(preg_match($password_regex, $_POST['password'])) {
-                        $user = new User(htmlspecialchars($_POST['username']), htmlspecialchars($_POST['email']), password_hash($_POST['password'], PASSWORD_BCRYPT), "USER", DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s')));         
+                        $user = new User(htmlspecialchars($_POST['username']), htmlspecialchars($_POST['email']), password_hash($_POST['password'], PASSWORD_BCRYPT));         
                         $userManager->create($user);
                         $this->redirect("index.php");
                     } else {
@@ -100,20 +76,6 @@ class AuthController extends AbstractController
     public function logout() : void
     {
         session_destroy();
-
-        $this->redirect("index.php");
-    }
-
-    public function switchLang()
-    {
-        if($_SESSION["lang"] === "fr")
-        {
-            $_SESSION["lang"] = "en";
-        }
-        else
-        {
-            $_SESSION["lang"] = "fr";
-        }
 
         $this->redirect("index.php");
     }

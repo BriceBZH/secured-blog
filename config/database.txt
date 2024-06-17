@@ -1,4 +1,4 @@
 root
 
 localhost
-blog-secu-translate
+blog-secu

@@ -1,9 +1,4 @@
 <?php
-/**
- * @author : Gaellan
- * @link : https://github.com/Gaellan
- */
-
 
 class UserManager extends AbstractManager
 {
@@ -21,7 +16,7 @@ class UserManager extends AbstractManager
         $userDB = $query->fetch(PDO::FETCH_ASSOC);
 
         if($userDB) {
-            $user = new User($userDB['username'], $userDB['email'], $userDB['password'], $userDB['role'], DateTime::createFromFormat('Y-m-d H:i:s', $userDB['created_at']));
+            $user = new User($userDB['username'], $userDB['email'], $userDB['password'], $userDB['role']);
             $user->setId($userDB["id"]);
 
             return $user;
@@ -39,8 +34,8 @@ class UserManager extends AbstractManager
         $userDB = $query->fetch(PDO::FETCH_ASSOC);
 
         if($userDB) {
-            $user = new User($userDB['username'], $userDB['password'], $userDB['password'], $userDB['role'], DateTime::createFromFormat('Y-m-d H:i:s', $userDB['created_at']));
-            $user->setId($userDB["id"]);
+            $user = new User($userDB['username'], $userDB['email'], $userDB['password'], $userDB['role']);
+            $user->setId($userDB['id']);
 
             return $user;
         }
@@ -49,13 +44,15 @@ class UserManager extends AbstractManager
     }
 
     public function create(User $user) : void {
+        $currentDateTime = date('Y-m-d H:i:s');
+
         $query = $this->db->prepare('INSERT INTO users (username, email, password, role, created_at) VALUES (:username, :email, :password, :role, :createdAt)');
         $parameters = [
             "username" => $user->getUsername(),
             "email" => $user->getEmail(),
             "password" => $user->getPassword(),
             "role" => $user->getRole(),
-            "createdAt" => date('Y-m-d H:i:s'),
+            "createdAt" => $currentDateTime,
         ];
 
         $query->execute($parameters);
